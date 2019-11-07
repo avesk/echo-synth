@@ -3,3 +3,6 @@ This project will be using techniques in Music Information Retrieval to create a
 
 # Architecture
 https://drive.google.com/file/d/1fiv2uN9z6c5wk5WF8Zqrw6iKZNSWp9GP/view?usp=sharing
+
+![synth_architecture](synth_architecture.png)
+
