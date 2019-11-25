@@ -1,5 +1,6 @@
 from .oscillator import oscillator
 from .envelope_extraction import extract_envelope
+from .envelope_construction import envelope_amplitude
 
 
 class Synth():
@@ -30,8 +31,8 @@ class Synth():
     def get_frequencies(self):
         return self.frequencies
 
-    def amplitude_track(self):
-        return
+    def envelope_amp_track(self):
+        return envelope_amplitude(self.envelope, self.srate)
 
     def oscillator(self, freq=440.0, dur=1.0, srate=44100.0, amp=1.0, phase=0.0, wave_type='sinusoid'):
         return oscillator(freq=freq, dur=dur, srate=srate, amp=amp, phase=phase, wave_type=wave_type)
