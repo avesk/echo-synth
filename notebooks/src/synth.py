@@ -20,6 +20,8 @@ class Synth:
             "sustain": (0.0, 0.0),
             "release": 0.0,
         }
+        self.oscillators = []
+
 
     def set_srate(self, srate):
         self.srate = srate
@@ -43,16 +45,34 @@ class Synth:
     def get_duration(self):
         return self.duration
 
+    def get_oscillators(self):
+        return self.oscillators
+    
     def set_frequencies(self, signal=[]):
+        self.oscillators = []
+        
         if signal == []:
             signal = self.signal
+        
+        # Call Goh's func
+
         freqs = [
             (107.666015625, 11.412091),
             (215.33203125, 14.899792),
             (333.7646484375, 9.119412),
             (441.4306640625, 4.1135097),
         ]
+
         self.frequencies = freqs
+        for freq in freqs:
+            self.oscillators.append({
+                    'freq': freq[0],
+                    'amp': freq[1],
+                    'wave_type': 'sinusoid',
+                    'phase': 0
+                     }
+                )
+
         return freqs
 
     def get_frequencies(self):
@@ -74,6 +94,9 @@ class Synth:
             freq=freq, dur=dur, srate=srate, amp=amp, phase=phase, wave_type=wave_type
         )
 
+    def set_oscillator(self):
+        self.oscillators[index] = value
+
     def set_signal(self, signal):
         self.signal = signal
 
@@ -89,7 +112,7 @@ class Synth:
     def get_output(self, oscillators=[]):
         output = np.zeros(int(self.srate * self.duration))
 
-        for osc in oscillators:
+        for osc in self.oscillators:
             output += oscillator(
                 freq=osc["freq"],
                 dur=self.duration,
