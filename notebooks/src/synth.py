@@ -1,20 +1,19 @@
 from .oscillator import oscillator
 from .envelope_extraction import extract_envelope
 from .envelope_construction import envelope_amplitude
+import numpy as np
 
+# 3. build out get_signal
 
 class Synth():
 
-    signal = []
-    frequencies = []
-    envelope = {}
+    def __init__(self, signal=[], srate=44100):
 
-    def __init__(self):
-
-        self.signal = []
-        self.srate = 44100
+        self.signal = signal
+        self.srate = srate
         self.frequencies = []
-        self.srate = 44100
+        self.duration = 0
+        self.srate = srate
         self.envelope = {
             "attack": 0.0,
             "decay": 0.0,
@@ -29,6 +28,8 @@ class Synth():
         return srate
 
     def set_envelope(self, envelope):
+        sustain_time, sustain_power = envelope['sustain']
+        self.duration = envelope['attack'] + envelope['decay'] + envelope['release'] + sustain_time
         self.envelope = envelope
 
     def get_envelope(self):
@@ -37,8 +38,18 @@ class Synth():
     def extract_envelope(self):
         return extract_envelope(self.signal, self.srate)
 
-    def set_frequencies(self):
-        return
+    def get_duration(self):
+        return self.duration
+
+    def set_frequencies(self, signal=[]):
+        if signal == []:
+            signal = self.signal
+        freqs = [(107.666015625, 11.412091),
+                    (215.33203125, 14.899792),
+                    (333.7646484375, 9.119412),
+                    (441.4306640625, 4.1135097)]
+        self.frequencies = freqs
+        return freqs
 
     def get_frequencies(self):
         return self.frequencies
@@ -61,9 +72,12 @@ class Synth():
     def get_srate(self):
         return self.srate
 
-    def get_output(self):
-        # Create empty signal for output
-        # add oscillator for each frequency to output
-        # Apply envelope to output
-        # Return Output
-        return
+    def get_output(self, oscillators=[]):
+        output = np.zeros(int(self.srate * self.duration))
+
+        for osc in oscillators:
+            output += oscillator(freq=osc['freq'], dur=self.duration, amp=osc['amp'], phase=osc['phase'], wave_type=osc['wave_type'])
+        amp_track, length = envelope_amplitude(self.envelope, self.srate)
+        
+        return output[:length] * amp_track 
+
