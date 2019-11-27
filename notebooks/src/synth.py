@@ -25,7 +25,7 @@ class Synth:
         self.srate = srate
 
     def get_srate(self):
-        return srate
+        return self.srate
 
     def set_envelope(self, envelope):
         sustain_time, sustain_power = envelope["sustain"]
