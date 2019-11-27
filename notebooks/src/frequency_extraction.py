@@ -10,11 +10,11 @@ import librosa
 
 def _clean_input(audio):
     audio_mag = np.abs(audio)
-    audio_mag = audio_mag[np.argmax(audio_mag > 0.02):]
+    front = np.argmax(audio_mag > 0.01)
+    audio_mag = audio_mag[front:]
     b = audio_mag[::-1]
-    i = len(b) - np.argmax(b > 0.02) - 1
-    audio_mag = audio_mag[:i]
-    return audio_mag
+    back = len(b) - np.argmax(b > 0.01) - 1
+    return audio[front:back]
 
 
 def _normalize(audio_signal):
