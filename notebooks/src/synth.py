@@ -56,16 +56,8 @@ class Synth:
         if signal == []:
             signal = self.signal
         
-        # Call Goh's func
-        '''
-        freqs = [
-            (107.666015625, 11.412091),
-            (215.33203125, 14.899792),
-            (333.7646484375, 9.119412),
-            (441.4306640625, 4.1135097),
-        ]
-        '''
         freqs = self.extract_n_freq(5)
+        
         self.frequencies = freqs
         for freq in freqs:
             self.oscillators.append({
