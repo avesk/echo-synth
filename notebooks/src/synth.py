@@ -1,7 +1,8 @@
+import numpy as np
 from .oscillator import oscillator
 from .envelope_extraction import extract_envelope
 from .envelope_construction import envelope_amplitude
-import numpy as np
+from .frequency_extraction import extract_n_freq
 
 # 3. build out get_signal
 
@@ -30,7 +31,8 @@ class Synth:
     def set_envelope(self, envelope):
         sustain_time, sustain_power = envelope["sustain"]
         self.duration = (
-            envelope["attack"] + envelope["decay"] + envelope["release"] + sustain_time
+            envelope["attack"] + envelope["decay"] +
+            envelope["release"] + sustain_time
         )
         self.envelope = envelope
 
@@ -57,6 +59,9 @@ class Synth:
 
     def get_frequencies(self):
         return self.frequencies
+
+    def extract_n_freq(self, n):
+        return extract_n_freq(n, self.signal, sample_rate=self.srate)
 
     def envelope_amp_track(self):
         return envelope_amplitude(self.envelope, self.srate)
