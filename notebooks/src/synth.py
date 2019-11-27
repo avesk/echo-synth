@@ -2,15 +2,23 @@ from .oscillator import oscillator
 
 class Synth():
     
-    signal = []
-    frequencies = []
-    envelope = {}
-
     def __init__(self):
 
         self.signal = []
         self.frequencies = []
-        self.envelope = {}
+        self.srate = 44100
+        self.envelope = {
+            "attack": 0.0,
+            "decay": 0.0,
+            "sustain": (0.0, 0.0),
+            "release": 0.0
+        }
+
+    def set_srate(self, srate):
+        self.srate = srate
+
+    def get_srate(self):
+        return srate
 
     def set_envelope(self, envelope):
         self.envelope = envelope 
