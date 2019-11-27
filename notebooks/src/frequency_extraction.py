@@ -81,5 +81,5 @@ def extract_n_freq(N, audio, sample_rate=44100, n_fft=2048, use_stft=False):
     bin_to_freq = librosa.fft_frequencies(sample_rate, n_fft)
     top_N = _get_n_top(fft_data, N, bin_to_freq)
     top_N = [(freq, amp) for freq, amp in top_N if freq > 40]
-    top_N = _normalize_N_top
+    top_N = _normalize_N_top(top_N)
     return top_N
