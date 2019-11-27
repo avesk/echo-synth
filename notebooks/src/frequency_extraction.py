@@ -10,9 +10,9 @@ import librosa
 
 def _clean_input(audio):
     audio_mag = np.abs(audio)
-    audio_mag = audio_mag[np.argmax(audio_mag > 0.1):]
+    audio_mag = audio_mag[np.argmax(audio_mag > 0.02):]
     b = audio_mag[::-1]
-    i = len(b) - np.argmax(b > 0.1) - 1
+    i = len(b) - np.argmax(b > 0.02) - 1
     audio_mag = audio_mag[:i]
     return audio_mag
 
@@ -67,10 +67,19 @@ def _get_fft_data(audio, n_fft=2048, use_stft=False):
     return frame
 
 
+def _normalize_N_top(top_N):
+    max_amp = max(top_N, key=lambda x: x[1])[1]
+    print(max_amp)
+    top_N = [(freq, amp / max_amp) for freq, amp in top_N]
+    return top_N
+
+
 def extract_n_freq(N, audio, sample_rate=44100, n_fft=2048, use_stft=False):
     audio = _normalize(audio)
     audio = _clean_input(audio)
     fft_data = _get_fft_data(audio)
     bin_to_freq = librosa.fft_frequencies(sample_rate, n_fft)
     top_N = _get_n_top(fft_data, N, bin_to_freq)
+    top_N = [(freq, amp) for freq, amp in top_N if freq > 40]
+    top_N = _normalize_N_top
     return top_N
