@@ -57,14 +57,15 @@ class Synth:
             signal = self.signal
         
         # Call Goh's func
-
+        '''
         freqs = [
             (107.666015625, 11.412091),
             (215.33203125, 14.899792),
             (333.7646484375, 9.119412),
             (441.4306640625, 4.1135097),
         ]
-
+        '''
+        freqs = self.extract_n_freq(5)
         self.frequencies = freqs
         for freq in freqs:
             self.oscillators.append({
@@ -99,7 +100,7 @@ class Synth:
             freq=freq, dur=dur, srate=srate, amp=amp, phase=phase, wave_type=wave_type
         )
 
-    def set_oscillator(self):
+    def set_oscillator(self, index, value):
         self.oscillators[index] = value
 
     def set_signal(self, signal):
