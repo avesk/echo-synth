@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def sinusoid(freq=440.0, dur=1.0, srate=44100.0, amp=1.0, phase=0.0):
     t = np.linspace(0, dur, int(srate * dur))
     data = amp * np.sin(2 * np.pi * freq * t + phase)
